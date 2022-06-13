@@ -1,0 +1,120 @@
+	------基础-----
+pwd     查看你现在所处的位置
+mkdir   创建目录
+touch   创建文件 
+ls          查看目录列表
+ls -a      查看所有目录列表(包括隐藏的)
+ll           查看详细目录列表
+
+----------全局配置--global------------
+查看全局配置的话，直接命令行输入 cd 切换到用户目录，subl .gitconfig
+
+
+------配置个人信息-------
+git config --global user.email "你的邮箱"
+git config --global user.name "你的用户名"
+
+
+------本地仓库------
+git init       初始化仓库
+git clean -n          查看没有被管理的文件
+
+git clone   从现有git库拷贝克隆；
+git clone   <url...> 是远程克隆库到本地；
+git clone   <url...> <folderName...> 远程克隆库到本地的文件夹里面；
+git clone -b <branchName...> <url...>   仅克隆指定分支
+
+
+------删除文件目录-------
+rm -rf *                                                删除所有目录（跑路命令）
+git rm --cached '目标内容'                   只删除远程创库的文件，本地仓库的文件保留
+
+
+------查看当前工作区的状态------
+git status 
+
+
+------添加到暂存区-------------
+git add  目标内容      （添加单一目标文件）
+git add .                   （添加当前目录下所有文件到暂存区）
+
+
+------提交到本地仓库---------
+git commit -m '描述提交的内容'
+
+
+----------设置git提交忽略的配置文件------------
+touch .gitignore
+
+
+------------------修改文件名---------------------
+git mv <目标文件名> <要修改成的文件名>
+
+
+----------------使用log查看历史操作------------------
+git log              查看log信息
+git log -p          查看log的详细信息
+git log -数字     查看最近几次log的信息，数字可变动
+git log --oneline  查看简略的log信息
+
+
+----------修改git提交记录------------
+git commit --amend                                 ps：进入后输入i进行编辑模式，esc退出，最后 :wq回车保存
+
+
+----------alias给命令起别名------------
+git config --global alias.a add                 给add命令加别名a
+
+
+------分支---------
+git branch                                                查看分支
+git branch <branchName...>                   创建分支
+git checkout <branchName...>                切换分支
+git branch -d <branchName...>               删除分支
+git checkout -b <branchName...>           创建分支并切换到该分支
+git merge <branchName...>                    合并分支   ps:注意切换到master分支再合并
+git branch --merged                                与该分支的提交点相同的分支  ps:新创建的分支提交点是跟master的意样的
+git branch --no-merged                          与该分支的提交点不相同的分支
+git branch -D <branchName...>              强制删除分支   ps:未合并的分支用-d删除不了
+
+
+-------stash    临时储存区-------- ps:将本地没提交的内容（还没commit的）进行缓存并从当前分支移除，缓存的数据结构为堆栈，先进后出。stash 只会操作被git追踪的文件，所以新增的文件记得git add .
+git stash                                       将没有提交的内容缓存并移除，而这条缓存名称为最新一次提交的commit -m的内容
+git stash list                                  查看目前缓存的列表
+git stash apply                             恢复最新的那条暂时储存区数据
+git stash pop                                恢复最新的那条暂时储存区数据，且删除此条暂时储存区
+git stash apply stash@{（num...）}      恢复指定的那条暂时储存区数据
+git stash drop stash@{（num...）}       删除指定的那条缓存数据
+git stash clear                                       删除所有缓存数据
+
+
+-------把master分支下的文件打包成lyl.zip压缩包，解压后显示的文件夹为  lyl/ --------
+git archive master --prefix='lyl/' --forma=zip > lyl.zip
+
+
+-------rebase   变基，可以直接理解为改变基底。-------
+git rebase master                     ps:在需要变基的分支上用！    将待变基分支指向基分支的最新提交  例如：将ask分支重新指向master分支的最新提交上,(指向master的最新的commit上，这样就算两个分支同时工作，那最后也能在master分支上合并ask分支了。)
+
+
+-------配置SSH密匙   看 向军大叔 P28-------
+-------服务器做主角
+git clone 项目
+git add .
+git commit -m '测试本地仓库与远程仓库链接'
+git push         （推送到远程仓库）
+然后现在本地仓库和远程仓库就是一样的了
+
+-------本地做主角  
+先在本地“初始化仓库”并“初始提交”
+git remote add origin <创建项目时需要连接的那个SSH链接...>                 添加远程仓库
+git remote -v                                                                                            查看远程库
+git push -u origin master                                                                          推送数据到远程仓库      
+
+
+---------github---------------
+git push                                                                                          提交库文件至远程库；
+git pull                                                                                            从远程库拉取；
+git push --set-upstream origin <branchName...>                          将本地分支与远程分支同步并且推送数据
+git pull origin <branchName...>                                                     拷贝远程某个分支    ps：记得先创建好分支并切换到分支后再运行该命令
+git pull origin <branchName...>:<branchName...>                        拷贝远程某个分支到本地的某某分支；（重命名）  ps：实践时发现会自动合并分支到master
+git push origin --delete <name>                                                   删除远程分支；
